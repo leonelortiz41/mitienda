@@ -1,0 +1,162 @@
+[
+  {
+    "id": 1,
+    "name": "Remera Blanca",
+    "price": 18,
+    "description": "Remera básica de algodón en varios colores.",
+    "category": "Remeras",
+    "image": "https://picsum.photos/id/29/200/120",
+    "onSale": true,
+    "salePrice": 15
+  },
+  {
+    "id": 2,
+    "name": "Camisa de Lino",
+    "price": 30,
+    "description": "Camisa de lino perfecta para el verano.",
+    "category": "Camisas",
+    "image": "https://picsum.photos/id/25/200/120",
+    "onSale": false,
+    "salePrice": null
+  },
+  {
+    "id": 3,
+    "name": "Pantalón Jeans",
+    "price": 40,
+    "description": "Pantalón jeans de corte clásico.",
+    "category": "Pantalones",
+    "image": "https://picsum.photos/id/2/200/120",
+    "onSale": true,
+    "salePrice": 35
+  },
+  {
+    "id": 4,
+    "name": "Gorra Deportiva",
+    "price": 10,
+    "description": "Gorra deportiva ajustable.",
+    "category": "Gorras",
+    "image": "https://picsum.photos/id/15/200/120",
+    "onSale": false,
+    "salePrice": null
+  },
+  {
+    "id": 5,
+    "name": "Remera Estampada",
+    "price": 20,
+    "description": "Remera estampada con diseño único.",
+    "category": "Remeras",
+    "image": "https://picsum.photos/id/16/200/120",
+    "onSale": true,
+    "salePrice": 18
+  },
+  {
+    "id": 6,
+    "name": "Camisa Formal",
+    "price": 50,
+    "description": "Camisa formal para ocasiones especiales.",
+    "category": "Camisas",
+    "image": "https://picsum.photos/id/18/200/120",
+    "onSale": false,
+    "salePrice": null
+  },
+  {
+    "id": 7,
+    "name": "Pantalón Chino",
+    "price": 35,
+    "description": "Pantalón chino cómodo y elegante.",
+    "category": "Pantalones",
+    "image": "https://picsum.photos/id/19/200/120",
+    "onSale": true,
+    "salePrice": 30
+  },
+  {
+    "id": 8,
+    "name": "Gorra de Béisbol",
+    "price": 12,
+    "description": "Gorra de béisbol clásica.",
+    "category": "Gorras",
+    "image": "https://picsum.photos/id/12/200/120",
+    "onSale": false,
+    "salePrice": null
+  },
+  {
+    "id": 9,
+    "name": "Sweater de Lana",
+    "price": 60,
+    "description": "Sweater de lana para invierno.",
+    "category": "Abrigos",
+    "image": "https://picsum.photos/id/28/200/120",
+    "onSale": true,
+    "salePrice": 50
+  },
+  {
+    "id": 10,
+    "name": "Camiseta Deportiva",
+    "price": 25,
+    "description": "Camiseta deportiva para entrenamientos.",
+    "category": "Deporte",
+    "image": "https://picsum.photos/id/30/200/120",
+    "onSale": false,
+    "salePrice": null
+  },
+  {
+    "id": 11,
+    "name": "Vestido de Verano",
+    "price": 45,
+    "description": "Vestido ligero perfecto para el verano.",
+    "category": "Vestidos",
+    "image": "https://picsum.photos/id/31/200/120",
+    "onSale": true,
+    "salePrice": 40
+  },
+  {
+    "id": 12,
+    "name": "Chaqueta de Cuero",
+    "price": 80,
+    "description": "Chaqueta de cuero elegante.",
+    "category": "Abrigos",
+    "image": "https://picsum.photos/id/32/200/120",
+    "onSale": false,
+    "salePrice": null
+  },
+  {
+    "id": 13,
+    "name": "Zapatos Deportivos",
+    "price": 65,
+    "description": "Zapatos deportivos para correr.",
+    "category": "Zapatos",
+    "image": "https://picsum.photos/id/33/200/120",
+    "onSale": true,
+    "salePrice": 55
+  },
+  {
+    "id": 14,
+    "name": "Sombrero de Paja",
+    "price": 20,
+    "description": "Sombrero de paja perfecto para la playa.",
+    "category": "Accesorios",
+    "image": "https://picsum.photos/id/34/200/120",
+    "onSale": false,
+    "salePrice": null
+  },
+  {
+    "id": 15,
+    "name": "Bufanda de Lana",
+    "price": 15,
+    "description": "Bufanda de lana para el invierno.",
+    "category": "Accesorios",
+    "image": "https://picsum.photos/id/35/200/120",
+    "onSale": true,
+    "salePrice": 12
+  },
+  {
+    "id": 16,
+    "name": "Cinturón de Cuero",
+    "price": 25,
+    "description": "Cinturón de cuero de alta calidad.",
+    "category": "Accesorios",
+    "image": "https://picsum.photos/id/36/200/120",
+    "onSale": false,
+    "salePrice": null
+  }
+]

@@ -1,0 +1,217 @@
+/* Estilos generales */
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: #151515;
+  color: #a799aa;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  position: relative;
+  min-height: 100vh;
+}
+
+.container,
+.container-fluid,
+.container-sm,
+.container-md,
+.container-lg,
+.container-xl {
+  max-width: 100%;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #a799aa;
+}
+
+p, a {
+  color: #a799aa;
+}
+
+a:hover {
+  color: #ddd;
+  text-decoration: none;
+}
+
+/* Estilos de la barra de navegación */
+.navbar {
+  background-color: #111;
+}
+
+.navbar-brand, .nav-link {
+  color: #a799aa !important;
+  font-weight: bold;
+}
+
+.nav-link:hover {
+  color: #ddd !important;
+}
+
+/* Estilos de los botones */
+.btn-primary {
+  background-color: #a799aa;
+  border: none;
+  font-weight: bold;
+}
+
+.btn-primary:hover {
+  background-color: #9a899b;
+}
+
+.btn-danger {
+  background-color: #dc3545;
+  border: none;
+}
+
+.btn-danger:hover {
+  background-color: #c82333;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  border: none;
+}
+
+.btn-secondary:hover {
+  background-color: #5a6268;
+}
+
+
+/* App.css */
+.cart-items .list-group-item {
+  border: 1px solid #ddd;
+  padding: 15px;
+  margin-bottom: 10px;
+}
+
+.cart-items .list-group-item img {
+  max-width: 100%;
+  height: auto;
+}
+
+.cart-items .list-group-item strong {
+  font-size: 1.2em;
+}
+
+.cart-items .list-group-item p {
+  margin: 0;
+}
+
+
+.list-group-item div {
+  display: flex;
+  align-items: center;
+}
+
+.ml-2 {
+  margin-left: 10px;
+}
+
+.mt-3 {
+  margin-top: 1rem;
+}
+
+/* Estilos de las tarjetas de productos */
+
+
+.card {
+  border: 1px solid #ddd;
+  transition: transform 0.2s;
+}
+
+.card:hover {
+  transform: scale(1.05);
+}
+
+.card-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.card-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.card-text {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.card-img-top {
+  width: 100%;
+  height: auto;
+}
+
+/* App.css */
+.product-card .card-img-top {
+  max-height: 300px;
+  object-fit: cover;
+}
+
+.product-card .badge {
+  font-size: 0.9em;
+  padding: 0.5em 0.75em;
+}
+
+
+/* Estilos del formulario de pago */
+.form-control {
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  background-color: #fff;
+  color: #a799aa;
+}
+
+.form-control:focus {
+  border-color: #a799aa;
+  box-shadow: 0 0 0 0.2rem rgba(167, 153, 170, 0.25);
+}
+
+.form-label {
+  font-weight: bold;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+/* Estilos del footer */
+.footer {
+  background-color: #111;
+  color: #a799aa;
+  padding: 2rem 0;
+  text-align: center;
+  width: 100%;
+}
+
+.footer h5 {
+  margin-bottom: 1rem;
+  font-weight: bold;
+}
+
+.footer p {
+  margin: 0.5rem 0;
+}
+
+.btn-navHome{
+  color: #a799aa;
+  text-decoration: double;
+  background: none;
+  border: none;
+}
+.btn-navHome:hover{
+  color: #6c757d;
+  text-decoration: double;
+  background: none;
+  border: none;
+}
+.btn-navHome:active{
+  background-color: #9a899b;
+  color: #111;
+}
+.logo{
+  width: 95px;
+}
