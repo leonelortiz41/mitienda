@@ -33,8 +33,10 @@ const Cart = () => {
   };
 
   const removeItem = (productId) => {
-    const updatedCart = cartItems.filter(item => item.id !== productId);
-    updateCart(updatedCart);
+    if (window.confirm('¿Estás seguro de que deseas eliminar este producto?')) {
+      const updatedCart = cartItems.filter(item => item.id !== productId);
+      updateCart(updatedCart);
+    }
   };
 
   const totalPrice = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
@@ -45,7 +47,9 @@ const Cart = () => {
         <Col>
           <h1>Tu Carrito</h1>
           {cartItems.length === 0 ? (
-            <p>Tu carrito está vacío. ¡Agrega productos para comenzar!</p>
+            <div className="text-center">
+              <p>Tu carrito está vacío. ¡Agrega productos para comenzar!</p>
+            </div>
           ) : (
             <ListGroup variant="flush">
               {cartItems.map(item => (
@@ -71,7 +75,7 @@ const Cart = () => {
           )}
           <div className="d-flex flex-column flex-md-row justify-content-between align-items-center mt-4">
             <h3>Total: ${totalPrice}</h3>
-            <Button  className="mt-3 mt-md-0" onClick={() => navigate('/checkout')}>Proceder al Pago</Button>
+            <Button className="mt-3 mt-md-0" onClick={() => navigate('/checkout')}>Proceder al Pago</Button>
           </div>
         </Col>
       </Row>

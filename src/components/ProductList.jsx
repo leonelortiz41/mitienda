@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Row, Col, Card, Button, Badge } from 'react-bootstrap';
+import { Container, Row, Col, Card, Button, ButtonGroup } from 'react-bootstrap';
+import { FaCartPlus, FaInfoCircle } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import productsData from '../produtos.json';
 
@@ -35,15 +36,6 @@ const ProductList = ({ selectedCategory }) => {
             <Card className="product-card">
               <div className="position-relative">
                 <Card.Img variant="top" src={product.image} alt={product.name} />
-                {product.onSale && (
-                  <Badge
-                    pill
-                    bg="danger"
-                    className="position-absolute top-0 start-0 m-2"
-                  >
-                    Oferta
-                  </Badge>
-                )}
               </div>
               <Card.Body>
                 <Card.Title>{product.name}</Card.Title>
@@ -58,8 +50,25 @@ const ProductList = ({ selectedCategory }) => {
                     `$${product.price}`
                   )}
                 </Card.Text>
-                <Button variant="primary" onClick={() => addToCart(product)}>Añadir al Carrito</Button>
-                <Link to={`/products/${product.id}`} className="btn btn-secondary ml-2">Ver Detalles</Link>
+                <ButtonGroup>
+                  <Button
+                    variant="primary"
+                    onClick={() => addToCart(product)}
+                    className="rounded-circle btn-lg-custom"
+                    title="Añadir al Carrito"
+                  >
+                    <FaCartPlus />
+                  </Button>
+                  <Button
+                    as={Link}
+                    to={`/products/${product.id}`}
+                    variant="secondary"
+                    className="rounded-circle btn-lg-custom ml-2"
+                    title="Ver Detalles"
+                  >
+                    <FaInfoCircle />
+                  </Button>
+                </ButtonGroup>
               </Card.Body>
             </Card>
           </Col>

@@ -21,11 +21,17 @@ body {
   padding-right: 1rem;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   color: #a799aa;
 }
 
-p, a {
+p,
+a {
   color: #a799aa;
 }
 
@@ -39,7 +45,8 @@ a:hover {
   background-color: #111;
 }
 
-.navbar-brand, .nav-link {
+.navbar-brand,
+.nav-link {
   color: #a799aa !important;
   font-weight: bold;
 }
@@ -196,22 +203,52 @@ a:hover {
   margin: 0.5rem 0;
 }
 
-.btn-navHome{
+.btn-navHome {
   color: #a799aa;
   text-decoration: double;
   background: none;
   border: none;
 }
-.btn-navHome:hover{
+
+.btn-navHome:focus {
+  background: none;
+}
+
+.btn-navHome:hover {
   color: #6c757d;
   text-decoration: double;
   background: none;
   border: none;
 }
-.btn-navHome:active{
+
+.btn-navHome:active {
   background-color: #9a899b;
   color: #111;
 }
-.logo{
+
+
+.btn-lg-custom {
+  width: 58px; /* Ajusta el tamaño según tu preferencia */
+  height: 58px; /* Ajusta el tamaño según tu preferencia */
+  font-size: 1.5rem; /* Ajusta el tamaño del ícono */
+  display: flex;
+  margin-inline: 7px;
+  align-items: center;
+  justify-content: center;
+}
+
+
+.logo {
   width: 95px;
 }
+
+/* App.css */
+.btn:active,
+.btn:focus:active,
+.btn:focus-visible,
+.btn:focus-visible:active {
+  background-color:  #111;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
