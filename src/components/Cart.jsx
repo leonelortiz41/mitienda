@@ -1,8 +1,7 @@
-// Cart.js
 import React, { useState, useEffect } from 'react';
-import { Container, Row, Col, ListGroup, Button, ButtonGroup, Image, Form } from 'react-bootstrap';
+import { Container, Row, Col, ListGroup, Button, ButtonGroup, Image, Form, Alert } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import '../App.css'; // Asegúrate de que los estilos estén incluidos
+import '../App.css';
 
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
@@ -45,37 +44,37 @@ const Cart = () => {
     <Container>
       <Row>
         <Col>
-          <h1>Tu Carrito</h1>
+          <h1 className="my-4">Tu Carrito</h1>
           {cartItems.length === 0 ? (
-            <div className="text-center">
-              <p>Tu carrito está vacío. ¡Agrega productos para comenzar!</p>
-            </div>
+            <Alert variant="info" className="text-center">
+              Tu carrito está vacío. ¡Agrega productos para comenzar!
+            </Alert>
           ) : (
             <ListGroup variant="flush">
               {cartItems.map(item => (
                 <ListGroup.Item key={item.id} className="d-flex flex-column flex-md-row justify-content-between align-items-center">
                   <div className="d-flex align-items-center mb-3 mb-md-0">
-                    <Image src={item.image} rounded style={{ width: '80px', height: '80px', marginRight: '10px' }} />
+                    <Image src={item.image} rounded style={{ width: '100px', height: '100px', marginRight: '15px' }} />
                     <div>
-                      <strong>{item.name}</strong>
-                      <p className="mb-1">${item.price} x {item.quantity} = ${item.price * item.quantity}</p>
+                      <h5 className="mb-1">{item.name}</h5>
+                      <p className="mb-1">${item.price} x {item.quantity} = <strong>${item.price * item.quantity}</strong></p>
                     </div>
                   </div>
                   <div className="d-flex flex-column flex-md-row align-items-center">
                     <ButtonGroup className="mb-2 mb-md-0">
-                      <Button variant="secondary" onClick={() => decreaseQuantity(item.id)}>-</Button>
-                      <Form.Control type="text" readOnly value={item.quantity} className="text-center mx-2" style={{ width: '40px' }} />
-                      <Button variant="secondary" onClick={() => increaseQuantity(item.id)}>+</Button>
+                      <Button variant="outline-secondary" onClick={() => decreaseQuantity(item.id)}>-</Button>
+                      <Form.Control type="text" readOnly value={item.quantity} className="text-center mx-2" style={{ width: '50px' }} />
+                      <Button variant="outline-secondary" onClick={() => increaseQuantity(item.id)}>+</Button>
                     </ButtonGroup>
-                    <Button variant="danger" className="ml-md-2 btn-danger" onClick={() => removeItem(item.id)}>Eliminar</Button>
+                    <Button variant="danger" className="ms-md-2" onClick={() => removeItem(item.id)}>Eliminar</Button>
                   </div>
                 </ListGroup.Item>
               ))}
             </ListGroup>
           )}
-          <div className="d-flex flex-column flex-md-row justify-content-between align-items-center mt-4">
-            <h3>Total: ${totalPrice}</h3>
-            <Button className="mt-3 mt-md-0" onClick={() => navigate('/checkout')}>Proceder al Pago</Button>
+          <div className="d-flex flex-column align-items-center mt-4">
+            <h3>Total: <strong>${totalPrice}</strong></h3>
+            <Button variant="success" className="mt-2" onClick={() => navigate('/checkout')}>Proceder al Pago</Button>
           </div>
         </Col>
       </Row>

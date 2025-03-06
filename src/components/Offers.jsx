@@ -1,6 +1,7 @@
 // Offers.js
 import React, { useState, useEffect } from 'react';
-import { Container, Row, Col, Card, Button, Badge } from 'react-bootstrap';
+import { Container, Row, Col, Card, Button, Badge,ButtonGroup } from 'react-bootstrap';
+import { FaCartPlus, FaInfoCircle } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import productsData from '../produtos.json';
 
@@ -49,8 +50,25 @@ const Offers = () => {
                   <span className="text-muted text-decoration-line-through">${product.price}</span>
                   <span className="ms-2 text-danger">${product.salePrice}</span>
                 </Card.Text>
-                <Button variant="primary" onClick={() => addToCart(product)}>Añadir al Carrito</Button>
-                <Link to={`/products/${product.id}`} className="btn btn-secondary ml-2">Ver Detalles</Link>
+                <ButtonGroup>
+                  <Button
+                    variant="primary"
+                    onClick={() => addToCart(product)}
+                    className="rounded-circle btn-lg-custom"
+                    title="Añadir al Carrito"
+                  >
+                    <FaCartPlus />
+                  </Button>
+                  <Button
+                    as={Link}
+                    to={`/products/${product.id}`}
+                    variant="secondary"
+                    className="rounded-circle btn-lg-custom ml-2"
+                    title="Ver Detalles"
+                  >
+                    <FaInfoCircle />
+                  </Button>
+                </ButtonGroup>
               </Card.Body>
             </Card>
           </Col>
