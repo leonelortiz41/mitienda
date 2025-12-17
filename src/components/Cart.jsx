@@ -1,182 +1,151 @@
-import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import { Container, Row, Col, Card, Button, Form, InputGroup, Alert, Badge } from 'react-bootstrap';
-import { FaTrash, FaShoppingCart, FaTimes, FaMoneyBillWave } from 'react-icons/fa';
+import React, { useState, useMemo } from 'react';
+import { Container, Row, Col, Card, Button, Form, InputGroup, Badge, Tooltip, OverlayTrigger } from 'react-bootstrap';
+import { FaTrash, FaShoppingCart, FaMoneyBillWave, FaArrowLeft, FaInfoCircle } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 
-// Supongamos que esta función obtiene los productos del localStorage
-const getCartItems = () => JSON.parse(localStorage.getItem('cart')) || [];
-
 const Cart = () => {
-    const [cartItems, setCartItems] = useState(getCartItems());
+    // Nota: En un proyecto real, estos vendrían de un useContext(CartContext)
+    const [cartItems, setCartItems] = useState(JSON.parse(localStorage.getItem('cart')) || []);
 
-    // --- Lógica de Manejo del Carrito ---
-    const updateLocalStorage = useCallback((newItems) => {
+    const updateCart = (newItems) => {
         setCartItems(newItems);
         localStorage.setItem('cart', JSON.stringify(newItems));
-        // Disparar evento de storage para actualizar la Navbar
-        window.dispatchEvent(new Event('storage')); 
-    }, []);
-
-    const handleQuantityChange = (id, change) => {
-        const newItems = cartItems.map(item => {
-            if (item.id === id) {
-                const newQuantity = item.quantity + change;
-                return { ...item, quantity: Math.max(1, newQuantity) }; // Mínimo 1
-            }
-            return item;
-        });
-        updateLocalStorage(newItems);
+        window.dispatchEvent(new Event('storage'));
     };
 
-    const handleRemoveItem = (id) => {
-        const newItems = cartItems.filter(item => item.id !== id);
-        updateLocalStorage(newItems);
+    const handleQuantity = (id, delta) => {
+        const updated = cartItems.map(item => 
+            item.id === id ? { ...item, quantity: Math.max(1, item.quantity + delta) } : item
+        );
+        updateCart(updated);
     };
 
-    // --- Cálculo de Totales ---
-    const { subtotal, totalItems } = useMemo(() => {
-        const total = cartItems.reduce((sum, item) => {
-            const price = item.onSale ? item.salePrice : item.price;
-            return sum + (price * item.quantity);
+    const removeItem = (id) => {
+        if (window.confirm("¿Estás seguro de que quieres eliminar este producto?")) {
+            updateCart(cartItems.filter(item => item.id !== id));
+        }
+    };
+
+    // Cálculos avanzados para demostrar capacidad analítica
+    const totals = useMemo(() => {
+        const subtotal = cartItems.reduce((acc, item) => acc + (item.onSale ? item.salePrice : item.price) * item.quantity, 0);
+        const savings = cartItems.reduce((acc, item) => {
+            return acc + (item.onSale ? (item.price - item.salePrice) * item.quantity : 0);
         }, 0);
-        const itemsCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
-        return { subtotal: total, totalItems: itemsCount };
+        return { subtotal, savings, total: subtotal, count: cartItems.reduce((a, b) => a + b.quantity, 0) };
     }, [cartItems]);
 
-    // --- Renderizado ---
     if (cartItems.length === 0) {
         return (
-            <Container className="my-5 text-center text-light">
-                <FaShoppingCart className="display-1 text-secondary mb-3" />
-                <h2 className="text-white">Tu Carrito está vacío</h2>
-                <p className="text-secondary">Parece que no has añadido nada todavía. ¡Explora nuestros productos!</p>
-                <Button as={Link} to="/" variant="primary" className="mt-3 fw-bold">
-                    Ir a la Tienda
+            <Container className="my-5 text-center py-5 shadow-sm rounded bg-dark border border-secondary">
+                <FaShoppingCart size={80} className="text-secondary mb-4 opacity-50" />
+                <h2 className="text-white fw-bold">Tu carrito está esperando ser llenado</h2>
+                <p className="text-secondary mb-4">¿No sabes por dónde empezar? ¡Mira nuestras últimas ofertas!</p>
+                <Button as={Link} to="/" variant="primary" size="lg" className="px-5 fw-bold">
+                    Explorar Productos
                 </Button>
             </Container>
         );
     }
 
     return (
-        <Container className="my-5 text-light">
-            <h1 className="text-center mb-5">
-                <FaShoppingCart className="me-3 text-accent" /> Tu Carrito de Compras
-                <Badge bg="secondary" className="ms-3 fs-5">{totalItems}</Badge>
-            </h1>
+        <Container className="my-5">
+            <div className="d-flex align-items-center mb-4 text-white">
+                <Button as={Link} to="/" variant="link" className="text-decoration-none text-secondary p-0 me-3">
+                    <FaArrowLeft /> Volver
+                </Button>
+                <h2 className="mb-0 fw-bold">Cesta de Compras <Badge bg="primary" pill className="ms-2 fs-6">{totals.count}</Badge></h2>
+            </div>
 
-            <Row>
-                {/* Columna de Productos */}
-                <Col lg={8} className="mb-4">
-                    {cartItems.map(item => {
-                        const unitPrice = item.onSale ? item.salePrice : item.price;
-                        const itemSubtotal = unitPrice * item.quantity;
-                        
-                        return (
-                            <Card key={item.id} className="mb-4 bg-light-dark border-secondary shadow-sm">
-                                <Card.Body className="d-flex flex-column flex-md-row align-items-center p-3">
-                                    
-                                    {/* Imagen y Nombre */}
-                                    <div className="d-flex align-items-center flex-grow-1 me-md-4 mb-3 mb-md-0">
-                                        <img 
-                                            src={item.image} 
-                                            alt={item.name} 
-                                            style={{ width: '80px', height: '80px', objectFit: 'cover', borderRadius: '4px' }}
-                                            className="me-3 border border-secondary"
-                                        />
-                                        <div>
-                                            <h5 className="mb-1 text-white fw-bold">{item.name}</h5>
-                                            <p className="mb-0 text-secondary">${unitPrice.toFixed(2)} / unidad</p>
+            <Row className="g-4">
+                <Col lg={8}>
+                    {cartItems.map(item => (
+                        <Card key={item.id} className="mb-3 bg-dark border-secondary text-white overflow-hidden shadow-hover">
+                            <Card.Body className="p-0">
+                                <Row className="g-0 align-items-center">
+                                    <Col xs={4} md={2}>
+                                        <img src={item.image} alt={item.name} className="img-fluid h-100 object-fit-cover" style={{minHeight: '100px'}} />
+                                    </Col>
+                                    <Col xs={8} md={10} className="p-3">
+                                        <div className="d-flex justify-content-between align-items-start">
+                                            <div>
+                                                <h5 className="fw-bold mb-1">{item.name}</h5>
+                                                {item.onSale && <Badge bg="danger" className="mb-2">¡Oferta!</Badge>}
+                                            </div>
+                                            <Button variant="link" className="text-danger p-0 shadow-none" onClick={() => removeItem(item.id)}>
+                                                <FaTrash />
+                                            </Button>
                                         </div>
-                                    </div>
+                                        
+                                        <div className="d-flex justify-content-between align-items-center mt-2 flex-wrap gap-3">
+                                            <InputGroup size="sm" style={{ width: '110px' }}>
+                                                <Button variant="outline-secondary" onClick={() => handleQuantity(item.id, -1)}>-</Button>
+                                                <Form.Control className="bg-transparent text-white text-center border-secondary" value={item.quantity} readOnly />
+                                                <Button variant="outline-secondary" onClick={() => handleQuantity(item.id, 1)}>+</Button>
+                                            </InputGroup>
 
-                                    {/* Controles de Cantidad */}
-                                    <div className="d-flex align-items-center mb-3 mb-md-0 mx-md-3">
-                                        <InputGroup size="sm" style={{ width: '120px' }}>
-                                            <Button 
-                                                variant="outline-secondary" 
-                                                onClick={() => handleQuantityChange(item.id, -1)}
-                                                disabled={item.quantity <= 1}
-                                            >
-                                                -
-                                            </Button>
-                                            <Form.Control 
-                                                type="text" 
-                                                className="text-center bg-dark text-light border-secondary"
-                                                value={item.quantity} 
-                                                readOnly
-                                            />
-                                            <Button 
-                                                variant="outline-secondary" 
-                                                onClick={() => handleQuantityChange(item.id, 1)}
-                                            >
-                                                +
-                                            </Button>
-                                        </InputGroup>
-                                    </div>
-                                    
-                                    {/* Subtotal y Eliminar */}
-                                    <div className="d-flex align-items-center ms-md-auto">
-                                        <strong className="me-3 text-accent fs-5" style={{ minWidth: '80px' }}>
-                                            ${itemSubtotal.toFixed(2)}
-                                        </strong>
-                                        <Button 
-                                            variant="outline-danger" 
-                                            size="sm" 
-                                            onClick={() => handleRemoveItem(item.id)}
-                                            title="Eliminar producto"
-                                        >
-                                            <FaTimes />
-                                        </Button>
-                                    </div>
-
-                                </Card.Body>
-                            </Card>
-                        );
-                    })}
+                                            <div className="text-end">
+                                                {item.onSale && <small className="text-decoration-line-through text-secondary d-block">${(item.price * item.quantity).toFixed(2)}</small>}
+                                                <span className="fs-5 fw-bold text-primary">
+                                                    ${((item.onSale ? item.salePrice : item.price) * item.quantity).toFixed(2)}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </Col>
+                                </Row>
+                            </Card.Body>
+                        </Card>
+                    ))}
                 </Col>
 
-                {/* Columna de Resumen de Pago (Sticker para pantallas grandes) */}
+                {/* Resumen de Compra - Demostrando diseño tipo Dashboard */}
                 <Col lg={4}>
-                    <Card className="bg-light-dark border-secondary shadow-lg sticky-top" style={{ top: '80px' }}>
-                        <Card.Header className="bg-dark border-secondary">
-                            <h4 className="mb-0 text-white">Resumen del Pedido</h4>
-                        </Card.Header>
-                        <Card.Body>
+                    <Card className="bg-dark border-primary text-white shadow-lg sticky-top" style={{ top: '20px' }}>
+                        <Card.Body className="p-4">
+                            <h4 className="fw-bold mb-4 border-bottom border-secondary pb-2">Resumen</h4>
+                            <div className="d-flex justify-content-between mb-2">
+                                <span className="text-secondary">Subtotal</span>
+                                <span>${totals.subtotal.toFixed(2)}</span>
+                            </div>
+                            {totals.savings > 0 && (
+                                <div className="d-flex justify-content-between mb-2 text-success">
+                                    <span>Descuento aplicado</span>
+                                    <span>-${totals.savings.toFixed(2)}</span>
+                                </div>
+                            )}
                             <div className="d-flex justify-content-between mb-3 text-secondary">
-                                <span>Subtotal ({totalItems} {totalItems === 1 ? 'artículo' : 'artículos'})</span>
-                                <span>${subtotal.toFixed(2)}</span>
+                                <span>Envío estim. 
+                                    <OverlayTrigger overlay={<Tooltip>Envío gratis por compras superiores a $50</Tooltip>}>
+                                        <span className="ms-1 cursor-pointer"><FaInfoCircle size={12}/></span>
+                                    </OverlayTrigger>
+                                </span>
+                                <span className="text-success fw-bold">Gratis</span>
                             </div>
 
-                            {/* Fila de Envío (simulado) */}
-                            <div className="d-flex justify-content-between mb-4 text-success">
-                                <span>Envío Estándar</span>
-                                <span>GRATIS</span>
-                            </div>
-                            
                             <hr className="border-secondary" />
 
-                            {/* Total Final */}
-                            <div className="d-flex justify-content-between align-items-center my-3">
-                                <h4 className="mb-0 text-white">Total Final</h4>
-                                <h3 className="mb-0 text-accent fw-bold">${subtotal.toFixed(2)}</h3>
+                            <div className="d-flex justify-content-between align-items-end mb-4">
+                                <h5 className="mb-0 fw-bold">Total</h5>
+                                <div className="text-end">
+                                    <h3 className="mb-0 fw-bold text-primary">${totals.total.toFixed(2)}</h3>
+                                    <small className="text-secondary">IVA incluido</small>
+                                </div>
                             </div>
 
-                            <Button 
-                                as={Link} 
-                                to="/checkout" 
-                                variant="success" 
-                                className="w-100 py-2 mt-3 fw-bold fs-5"
-                            >
-                                <FaMoneyBillWave className="me-2" /> Proceder al Pago
+                            <Button as={Link} to="/checkout" variant="primary" size="lg" className="w-100 fw-bold mb-3 shadow">
+                                <FaMoneyBillWave className="me-2" /> Finalizar Compra
                             </Button>
                             
-                            <p className="text-center text-secondary small mt-3">Los impuestos se calcularán en el checkout.</p>
+                            <div className="text-center">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/b/b5/PayPal.svg" alt="PayPal" height="20" className="me-3 grayscale opacity-50" />
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/5/5e/Visa_Inc._logo.svg" alt="Visa" height="15" className="grayscale opacity-50" />
+                            </div>
                         </Card.Body>
                     </Card>
                 </Col>
             </Row>
         </Container>
     );
-}
+};
 
 export default Cart;

@@ -1,107 +1,94 @@
-// NavigationBar.jsx
 import React, { useState, useEffect, useCallback } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Navbar, Nav, Container, Badge } from 'react-bootstrap';
-import { FaShoppingCart, FaUserCircle } from 'react-icons/fa';
+import { FaShoppingCart, FaUserCircle, FaQuestionCircle } from 'react-icons/fa';
 import logo from "../assets/mitienda.svg";
-// Importar estilos de App.css o definir estilos inline si es necesario
 
 const NavigationBar = () => {
     const [cartCount, setCartCount] = useState(0);
+    const [isScrolling, setIsScrolling] = useState(false);
+    const location = useLocation(); // Para saber qué link marcar como activo
 
-    // Función para calcular la cantidad total de artículos en el carrito
     const getCartCount = useCallback(() => {
         try {
             const cart = JSON.parse(localStorage.getItem('cart')) || [];
-            // Sumar las cantidades (quantity) de todos los productos
-            const total = cart.reduce((sum, item) => sum + (item.quantity || 0), 0);
-            return total;
-        } catch (error) {
-            console.error("Error al leer el carrito de localStorage:", error);
-            return 0;
-        }
+            return cart.reduce((sum, item) => sum + (item.quantity || 0), 0);
+        } catch { return 0; }
     }, []);
 
-    // 1. Efecto para inicializar el contador al montar el componente
+    // Sincronización proactiva sin setInterval
     useEffect(() => {
-        setCartCount(getCartCount());
-    }, [getCartCount]);
-
-    // 2. Efecto para escuchar los cambios en el localStorage (para que el contador 
-    // se actualice automáticamente cuando se añaden ítems desde ProductList, por ejemplo)
-    useEffect(() => {
-        const handleStorageChange = (e) => {
-            // Solo actualiza si el cambio afecta la clave 'cart'
-            if (e.key === 'cart' || !e.key) { 
-                setCartCount(getCartCount());
-            }
-        };
-
-        // Escucha el evento 'storage' para cambios en la misma ventana
-        window.addEventListener('storage', handleStorageChange);
+        const updateCount = () => setCartCount(getCartCount());
         
-        // También verifica los cambios en el componente (necesario cuando los cambios son internos/programáticos)
-        // Usamos un intervalo de sondeo como fallback, aunque 'storage' es el método preferido.
-        const intervalId = setInterval(() => {
-            const currentCount = getCartCount();
-            if (currentCount !== cartCount) {
-                 setCartCount(currentCount);
-            }
-        }, 1000); // Sondeo cada segundo
+        updateCount(); // Carga inicial
 
-        // Función de limpieza
+        // Escucha cambios de otras pestañas y de nuestra propia app
+        window.addEventListener('storage', updateCount);
+        window.addEventListener('cartUpdated', updateCount); 
+        
+        // Efecto visual al hacer scroll
+        const handleScroll = () => setIsScrolling(window.scrollY > 50);
+        window.addEventListener('scroll', handleScroll);
+
         return () => {
-            window.removeEventListener('storage', handleStorageChange);
-            clearInterval(intervalId);
+            window.removeEventListener('storage', updateCount);
+            window.removeEventListener('cartUpdated', updateCount);
+            window.removeEventListener('scroll', handleScroll);
         };
-    }, [getCartCount, cartCount]); // Dependencia en cartCount para evitar bucles de sondeo innecesarios
+    }, [getCartCount]);
 
     return (
         <Navbar 
-            bg="dark" 
-            variant="dark" 
             expand="lg" 
-            className="custom-navbar shadow-lg sticky-top" // Añadimos shadow y sticky-top
+            fixed="top"
+            variant="dark"
+            className={`transition-all py-2 ${
+                isScrolling 
+                ? 'bg-dark-glass shadow-lg py-1' 
+                : 'bg-transparent'
+            }`}
+            style={{ 
+                backdropFilter: isScrolling ? 'blur(10px)' : 'none',
+                transition: 'all 0.3s ease-in-out'
+            }}
         >
-            <Container fluid className="px-md-5">
-                <Navbar.Brand as={Link} to="/">
-                    <img src={logo} className='logo me-2' alt="Mi Tienda" height="40" />
-                    <span className="fw-bold text-accent d-none d-sm-inline">Mi Tienda</span>
+            <Container>
+                <Navbar.Brand as={Link} to="/" className="d-flex align-items-center">
+                    <img src={logo} alt="Logo" height="35" className="me-2 rounded-circle bg-primary p-1" />
+                    <span className="fw-black text-white tracking-tighter">TECH<span className="text-primary">STORE</span></span>
                 </Navbar.Brand>
                 
-                <Navbar.Toggle aria-controls="basic-navbar-nav" />
+                <Navbar.Toggle className="border-0 shadow-none" aria-controls="nav-content" />
                 
-                <Navbar.Collapse id="basic-navbar-nav">
-                    <Nav className="ms-auto align-items-center">
-                        {/* Enlaces de navegación principales */}
-                        <Nav.Link as={Link} to="/help" className="nav-link-custom mx-lg-2">Ayuda</Nav.Link>
+                <Navbar.Collapse id="nav-content">
+                    <Nav className="ms-auto gap-2 align-items-center">
+                        <Nav.Link as={Link} to="/help" active={location.pathname === '/help'} className="nav-link-glass">
+                            <FaQuestionCircle className="me-1" /> Ayuda
+                        </Nav.Link>
                         
-                        {/* Enlace a Mis Compras (simulando un usuario autenticado) */}
-                        <Nav.Link as={Link} to="/order-history" className="nav-link-custom mx-lg-2">
+                        <Nav.Link as={Link} to="/order-history" active={location.pathname === '/order-history'} className="nav-link-glass">
                             <FaUserCircle className="me-1" /> Mis Compras
                         </Nav.Link>
 
-                        {/* Enlace del Carrito con Contador (Destacado) */}
+                        <div className="vr d-none d-lg-block mx-2 text-secondary"></div>
+
                         <Nav.Link 
                             as={Link} 
                             to="/cart" 
-                            className="nav-link-custom mx-lg-2 position-relative"
+                            className="cart-icon-container"
                         >
-                            <FaShoppingCart className="fs-5" /> 
-                            <span className="ms-1 d-lg-none">Carrito</span> 
-                            
-                            {/* Insignia con el número de ítems */}
-                            {cartCount > 0 && (
-                                <Badge 
-                                    pill 
-                                    bg="danger" 
-                                    className="position-absolute top-0 start-100 translate-middle"
-                                    style={{ fontSize: '0.7em', padding: '0.4em 0.6em' }}
-                                >
-                                    {cartCount}
-                                    <span className="visually-hidden">items en el carrito</span>
-                                </Badge>
-                            )}
+                            <div className="position-relative p-2 bg-primary-soft rounded-circle">
+                                <FaShoppingCart size={20} className="text-white" />
+                                {cartCount > 0 && (
+                                    <Badge 
+                                        pill 
+                                        bg="danger" 
+                                        className="position-absolute top-0 start-100 translate-middle badge-bounce shadow-sm"
+                                    >
+                                        {cartCount}
+                                    </Badge>
+                                )}
+                            </div>
                         </Nav.Link>
                     </Nav>
                 </Navbar.Collapse>

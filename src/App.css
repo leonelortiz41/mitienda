@@ -1,35 +1,34 @@
 /* ======================================= */
-/* 1. VARIABLES GLOBALES DE DISEÑO */
+/* 1. VARIABLES GLOBALES DE DISEÑO         */
 /* ======================================= */
 :root {
-    /* Colores base para el tema oscuro */
-    --color-primary: #8abff7;        /* Azul de botón principal */
-    --color-secondary: #6c757d;      /* Gris de texto y bordes */
-    --color-dark: #121212;           /* Fondo principal (Muy Oscuro) */
-    --color-light-dark: #1e1e1e;     /* Fondo de tarjetas y paneles */
-    --color-accent: #00bcd4;         /* Cian/Turquesa vibrante para destacar precios/links */
-    --color-text-light: #f8f9fa;     /* Texto principal (Blanco apagado) */
-    --color-text-secondary: #adb5bd; /* Texto secundario */
-
-    /* Fuentes */
-    --font-family: 'Poppins', sans-serif; /* Poppins es moderna y legible */
+    --color-primary: #8abff7;        /* Azul botones */
+    --color-secondary: #6c757d;      /* Gris bordes */
+    --color-dark: #121212;           /* Fondo principal */
+    --color-light-dark: #1e1e1e;     /* Fondo tarjetas/paneles */
+    --color-accent: #00bcd4;         /* Cian para precios y acentos */
+    --color-text-light: #f8f9fa;     /* Texto principal */
+    --color-text-secondary: #adb5bd; /* Texto secundario legible */
+    
+    --font-family: 'Poppins', sans-serif;
+    --transition-speed: 0.3s;
+    --border-radius-lg: 16px;
+    --border-radius-md: 10px;
 }
 
-/* --------------------------------------- */
-/* IMPORTAR FUENTE (Si no se hace en index.html) */
-/* @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap'); */
-/* --------------------------------------- */
-
-
 /* ======================================= */
-/* 2. ESTILOS BASE Y CUERPO */
+/* 2. ESTILOS BASE                         */
 /* ======================================= */
-
 body {
     background-color: var(--color-dark);
     color: var(--color-text-light);
     font-family: var(--font-family);
-    transition: background-color 0.3s, color 0.3s;
+    margin: 0;
+    overflow-x: hidden;
+}
+
+html {
+    scroll-behavior: smooth;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -37,189 +36,301 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: 600;
 }
 
-a {
-    color: var(--color-accent);
-    text-decoration: none;
-    transition: color 0.2s;
+/* ======================================= */
+/* 1. VARIABLES GLOBALES                   */
+/* ======================================= */
+:root {
+    --color-primary: #0d6efd;       /* Azul Bootstrap estándar */
+    --color-accent: #00bcd4;        /* Cian vibrante para precios */
+    --color-dark: #121212;          /* Fondo muy oscuro */
+    --color-card-bg: #1e1e1e;       /* Fondo de la tarjeta */
+    --color-text-main: #ffffff;     /* Blanco puro para títulos */
+    --color-text-muted: #ced4da;    /* Gris claro para descripciones */
+    --border-light: rgba(255, 255, 255, 0.1);
 }
 
-a:hover {
-    color: var(--color-primary);
+body {
+    background-color: var(--color-dark);
+    color: var(--color-text-main);
+    font-family: 'Poppins', sans-serif;
 }
-
-/* Ajustes generales de Bootstrap */
-.container-fluid {
-    padding-left: 1rem;
-    padding-right: 1rem;
-}
-
 
 /* ======================================= */
-/* 3. NAVEGACIÓN (NavigationBar) */
+/* 2. TARJETAS DE PRODUCTO (CON CONTRASTE) */
 /* ======================================= */
+.product-card {
+    background-color: var(--color-card-bg) !important;
+    border: 1px solid var(--border-light) !important;
+    border-radius: 12px !important;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    height: 100%;
+}
 
+.product-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.5);
+    border-color: var(--color-accent) !important;
+}
+
+/* Contenedor de la imagen */
+.card-img-container {
+    height: 250px;
+    overflow: hidden;
+    background-color: #2a2a2a; /* Color de respaldo si no hay imagen */
+}
+
+.img-zoom {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Esto asegura que la imagen llene el espacio sin deformarse */
+    transition: transform 0.5s ease;
+}
+
+.product-card:hover .img-zoom {
+    transform: scale(1.1);
+}
+
+/* TEXTO DENTRO DE LA TARJETA */
+.product-card .card-body {
+    padding: 1.5rem;
+    text-align: center;
+}
+
+.product-card .card-title {
+    color: var(--color-text-main) !important; /* Forzamos blanco */
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5); /* Sombra para resaltar */
+}
+
+.product-card .card-text {
+    color: var(--color-text-muted) !important; /* Gris claro legible */
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+/* PRECIOS */
+.text-accent {
+    color: var(--color-accent) !important;
+    font-size: 1.4rem;
+    font-weight: 800;
+}
+
+.price-old {
+    color: #6c757d;
+    text-decoration: line-through;
+    font-size: 0.9rem;
+    margin-right: 8px;
+}
+
+/* ======================================= */
+/* 3. BOTONES                              */
+/* ======================================= */
+.btn-primary {
+    background-color: #007bff !important;
+    border: none !important;
+    font-weight: 600;
+    padding: 10px 20px;
+}
+
+.btn-outline-secondary {
+    color: #ced4da !important;
+    border-color: #495057 !important;
+}
+
+.btn-outline-secondary:hover {
+    background-color: #495057 !important;
+    color: #fff !important;
+}
+
+/* ======================================= */
+/* 4. NAVBAR Y CARROUSEL                   */
+/* ======================================= */
 .custom-navbar {
-    background-color: var(--color-light-dark) !important;
+    background-color: rgba(18, 18, 18, 0.95) !important;
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--color-accent);
+}
+
+.carousel-caption h3 {
+    font-size: 3rem;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+/* ======================================= */
+/* 3. NAVEGACIÓN (Navbar)                  */
+/* ======================================= */
+.custom-navbar {
+    background-color: rgba(30, 30, 30, 0.95) !important;
+    backdrop-filter: blur(10px);
     border-bottom: 2px solid var(--color-accent);
+    padding: 0.8rem 0;
 }
 
 .custom-navbar .navbar-brand {
     color: var(--color-text-light) !important;
-}
-
-.custom-navbar .nav-link-custom {
-    color: var(--color-text-secondary) !important;
-    font-weight: 500;
-    padding: 0.5rem 1rem;
-    border-radius: 5px;
-    transition: background-color 0.2s, color 0.2s;
-}
-
-.custom-navbar .nav-link-custom:hover {
-    color: var(--color-accent) !important;
-    background-color: rgba(0, 188, 212, 0.1); /* Sutil fondo al pasar el mouse */
-}
-
-.logo {
-    height: 40px; /* Definido en NavigationBar.jsx, pero bueno tenerlo */
-}
-
-/* ======================================= */
-/* 4. SECCIONES (Home, Help) */
-/* ======================================= */
-
-/* Navbar de categorías en Home.js */
-.custom-navbar.justify-content-center {
-    background-color: var(--color-light-dark) !important;
-}
-
-.custom-navbar .nav-link.active,
-.custom-navbar .nav-link.active:focus,
-.custom-navbar .nav-link.active:hover {
-    background-color: var(--color-accent) !important;
-    color: var(--color-dark) !important;
     font-weight: 700;
 }
 
-/* Estilo para los botones de navegación de categorías no activos */
-.btn-navHome {
+.nav-link-custom {
     color: var(--color-text-secondary) !important;
-    border: none;
-    transition: background-color 0.2s, color 0.2s;
+    transition: color 0.2s;
 }
 
-.btn-navHome:hover:not(.active) {
-    background-color: var(--color-dark) !important;
+.nav-link-custom:hover {
     color: var(--color-accent) !important;
 }
 
 /* ======================================= */
-/* 5. TARJETAS DE PRODUCTO (ProductList) */
+/* 4. LISTA DE PRODUCTOS (Cards)           */
 /* ======================================= */
-
-.product-card,.card-body {
-  color: #fff;
-    background-color: var(--color-light-dark);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+.product-card {
+    background-color: var(--color-light-dark) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: var(--border-radius-md) !important;
     overflow: hidden;
+    transition: all var(--transition-speed) ease;
 }
 
+/* EFECTO HOVER DE LA TARJETA */
 .product-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+    transform: translateY(-10px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6) !important;
+    border-color: var(--color-accent) !important;
 }
 
-.product-card .card-img-top {
-    height: 250px;
+/* CONTRASTE DE TEXTO (SOLUCIÓN A TU PROBLEMA) */
+.product-card .card-body {
+    background-color: transparent !important;
+    color: var(--color-text-light) !important;
+    padding: 1.25rem;
+}
+
+.product-card .card-title {
+    color: #ffffff !important; /* Blanco puro para visibilidad */
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+}
+
+.product-card .card-text {
+    color: var(--color-text-secondary) !important; /* Gris claro, no oscuro */
+    font-size: 0.9rem;
+}
+
+/* IMAGEN Y ZOOM */
+.img-zoom {
+    transition: transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
     object-fit: cover;
+    height: 250px;
+    width: 100%;
 }
 
-/* Estilo de Precio de Oferta */
+.product-card:hover .img-zoom {
+    transform: scale(1.1);
+}
+
+/* PRECIOS */
 .text-accent {
     color: var(--color-accent) !important;
-}
-
-/* Botón principal de la tarjeta */
-.product-card .btn-primary {
-    background-color: var(--color-accent);
-    border-color: var(--color-accent);
-    font-weight: 600;
-    transition: background-color 0.2s, transform 0.2s;
-}
-
-.product-card .btn-primary:hover {
-    background-color: #0097a7; /* Un tono más oscuro de acento */
-    border-color: #0097a7;
-    transform: translateY(-1px);
+    font-weight: 700;
 }
 
 /* ======================================= */
-/* 6. PÁGINA DE DETALLES (Product.js) */
+/* 5. PÁGINA DE DETALLES (Product.jsx)     */
 /* ======================================= */
-
-/* Carrusel */
-.product-carousel .carousel-item img {
-    border-radius: 8px;
+.product-carousel {
+    border-radius: var(--border-radius-lg);
+    background-color: #ffffff; /* Fondo para resaltar producto */
+    padding: 20px;
 }
 
-/* Reviews y Accordion */
 .accordion-item {
     background-color: var(--color-light-dark) !important;
-    border-color: rgba(255, 255, 255, 0.1) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    color: var(--color-text-light) !important;
 }
 
-.accordion-header .accordion-button {
+.accordion-button {
     background-color: var(--color-light-dark) !important;
     color: var(--color-text-light) !important;
-    font-weight: 600;
 }
 
-/* Reseñas individuales */
-.list-group-item.bg-dark {
-    background-color: var(--color-light-dark) !important;
+.accordion-button:not(.collapsed) {
+    color: var(--color-accent) !important;
+    box-shadow: none !important;
 }
 
-/* Controles de Formulario para tema oscuro */
+/* FORMULARIOS DE RESEÑAS */
 .form-control-dark {
     background-color: #2a2a2a !important;
-    color: var(--color-text-light) !important;
-    border-color: #3d3d3d !important;
+    color: #ffffff !important;
+    border: 1px solid #444 !important;
 }
 
 .form-control-dark:focus {
-    background-color: #2a2a2a !important;
     border-color: var(--color-accent) !important;
-    box-shadow: 0 0 0 0.25rem rgba(0, 188, 212, 0.25);
+    box-shadow: 0 0 0 0.25rem rgba(0, 188, 212, 0.25) !important;
 }
 
-
-/* ======================================= */
-/* 7. UTILIDADES Y ALERTAS */
-/* ======================================= */
-
-/* Fondo para texto del carrusel */
-.bg-dark-overlay {
-    background-color: rgba(0, 0, 0, 0.6);
+/* ESTRELLAS INTERACTIVAS */
+.star-rating-input span {
+    transition: transform 0.2s ease;
+    display: inline-block;
 }
 
-/* Alerta de notificación flotante (ej. en ProductList o Product) */
+.star-rating-input span:hover {
+    transform: scale(1.3);
+}
+
+/* ======================================= */
+/* 6. COMPONENTES DE INTERFAZ (UI)         */
+/* ======================================= */
+
+/* NOTIFICACIONES TOAST */
+.toast-container {
+    z-index: 9999 !important;
+}
+
+.toast {
+    background-color: var(--color-light-dark) !important;
+    border: 1px solid var(--color-accent) !important;
+    border-radius: var(--border-radius-md) !important;
+    color: white !important;
+}
+
+/* ALERTA FLOTANTE */
 .fixed-top-alert {
     position: fixed;
-    top: 15px;
+    top: 20px;
     left: 50%;
     transform: translateX(-50%);
-    z-index: 2000; 
-    min-width: 300px;
-    max-width: 90%;
-    border-radius: 8px;
-    background-color: var(--color-light-dark); /* Fondo oscuro para la alerta */
-    color: var(--color-text-light);
-    border: 1px solid var(--color-accent);
+    z-index: 3000;
+    min-width: 320px;
+    background-color: var(--color-light-dark) !important;
+    border: 1px solid var(--color-accent) !important;
+    color: white !important;
+    animation: slideDown 0.4s ease-out;
 }
 
-.alert-success {
-    background-color: #17382a !important;
-    color: #a4e5c5 !important;
-    border-color: #0f6640 !important;
+/* ANIMACIONES */
+@keyframes slideDown {
+    from { top: -100px; opacity: 0; }
+    to { top: 20px; opacity: 1; }
+}
+
+/* SCROLLBAR */
+::-webkit-scrollbar {
+    width: 8px;
+}
+::-webkit-scrollbar-track {
+    background: var(--color-dark);
+}
+::-webkit-scrollbar-thumb {
+    background: #333;
+    border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: var(--color-accent);
 }
